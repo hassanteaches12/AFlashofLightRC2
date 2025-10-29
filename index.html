@@ -1,1 +1,238 @@
-ajjbb
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Comprehension Quiz — A Flash of Light (Part 2: About Braille)</title>
+<style>
+/* ======= THEME ======= */
+:root{
+  --parchment:#fff6e8;
+  --ink:#2b2b2b;
+  --accent:#b66d1a;
+  --accent-2:#f5a623;
+  --muted:#6d6b5c;
+  --card-shadow: 0 14px 40px rgba(27,24,16,0.12);
+  --pill:#fff9f0;
+  --font-sans: system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:
+  radial-gradient(circle at 10% 10%, rgba(255,235,205,0.6), transparent 12%),
+  linear-gradient(180deg,#f6ece0,#f0e4d2 40%,#efe0c8 100%);
+  font-family:var(--font-sans); color:var(--ink);}
+.scene{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px;position:relative;overflow:hidden}
+.drift{position:absolute;opacity:0.12;font-size:46px;pointer-events:none}
+.d1{left:6%;top:8%;animation:drift 18s ease-in-out infinite}
+.d2{right:8%;top:18%;animation:drift 16s ease-in-out infinite}
+@keyframes drift{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(6deg)}100%{transform:translateY(0) rotate(0)}}
+
+/* wrapper + header */
+.wrap{width:95%;max-width:980px;margin:0 auto}
+.header{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.logo{width:84px;height:84px;border-radius:12px;background:linear-gradient(180deg,#fff,#ffefdc);display:flex;align-items:center;justify-content:center;border:3px solid rgba(0,0,0,0.03);box-shadow:var(--card-shadow)}
+.header h1{margin:0;font-size:22px;line-height:1.05}
+.header p{margin:0;color:var(--muted);font-size:13px}
+
+/* cards */
+.card{background:linear-gradient(180deg, rgba(255,250,240,0.95), rgba(255,246,230,0.97));border-radius:14px;padding:18px;border:1px solid rgba(0,0,0,0.04);box-shadow:var(--card-shadow)}
+label{display:block;font-weight:700;font-size:13px;margin-bottom:6px;color:var(--ink)}
+input[type="text"], select{padding:10px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);background:var(--pill);font-size:15px;min-width:140px}
+.btn{
+  background:linear-gradient(90deg,#ffefcc,#ffdca6);
+  border-radius:10px;padding:10px 16px;border:2px solid rgba(0,0,0,0.06);
+  font-weight:800;color:#6b3a00;cursor:pointer;box-shadow:0 8px 20px rgba(111,66,14,0.12)
+}
+.btn.secondary{background:#fff;border:1px solid rgba(0,0,0,0.04);color:var(--ink)}
+.btn:active{transform:translateY(1px)}
+
+/* quiz UI */
+#quiz-container{display:none;margin-top:16px}
+.q-card{margin-bottom:12px;padding:14px;border-radius:10px;background:linear-gradient(180deg,#fffaf0,#fff7ea);border:1px solid rgba(0,0,0,0.03);box-shadow:0 8px 26px rgba(28,20,10,0.06);opacity:0;transform:translateY(8px);animation:fadein .42s ease forwards;}
+@keyframes fadein{to{opacity:1;transform:none}}
+.q-top{display:flex;gap:12px;align-items:center}
+.q-num{background:linear-gradient(180deg,#fff,#f7efe0);padding:8px 10px;border-radius:8px;font-weight:900;color:var(--accent);min-width:46px;text-align:center}
+.q-text{font-weight:800;color:#2b2b2b}
+.opts{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.opt{padding:10px 14px;border-radius:999px;background:linear-gradient(180deg,#fffaf6,#fff6ed);cursor:pointer;border:1px solid rgba(0,0,0,0.04);font-weight:800;min-width:120px;text-align:center;transition:transform .12s, box-shadow .12s;}
+.opt:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.06)}
+.opt.selected{background:linear-gradient(90deg,#fff3d6,#fffbe8);border-color:rgba(246,166,35,0.35);}
+.opt.correct{background:linear-gradient(90deg,#e6fff2,#f0fff8);color:#0b7b4c}
+.opt.wrong{background:linear-gradient(90deg,#fff1f1,#fff6f6);color:#a33}
+.progress{flex:1;margin-right:10px;background:#f1e8d8;border-radius:999px;height:12px;overflow:hidden}
+.progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#f6b26b,#f08a24);transition:width .6s}
+.score{font-size:20px;font-weight:900;color:var(--accent-2);margin-top:10px}
+</style>
+</head>
+
+<body>
+<div class="scene">
+<div class="wrap">
+  <div class="header">
+    <div class="logo card">🔠</div>
+    <div>
+      <h1>📘 Comprehension Quiz — A Flash of Light (Part 2: About Braille)</h1>
+      <p>Test your understanding of Braille and its inventor, Louis Braille.</p>
+    </div>
+  </div>
+
+  <!-- student info -->
+  <section id="student-info-container" class="card">
+    <h2>🧭 Student Information</h2>
+    <form id="student-info-form">
+      <label>Name <input id="name" type="text" required></label>
+      <label>Roll <input id="roll" type="text" required></label>
+      <label>Class <input id="class" type="text" required></label>
+      <label>Section <input id="section" type="text" required></label>
+      <br>
+      <button type="submit" class="btn">Begin Quiz 🏁</button>
+    </form>
+  </section>
+
+  <!-- quiz -->
+  <section id="quiz-container">
+    <div class="card">
+      <h2>📜 About Braille — Comprehension Quiz</h2>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div id="live-q">Question 1 / 24</div>
+        <div style="width:180px"><div class="progress"><i id="progress-bar"></i></div></div>
+      </div>
+      <div id="quiz"></div>
+      <div style="display:flex;justify-content:space-between;margin-top:10px">
+        <div>
+          <button class="btn secondary" id="prev-btn" onclick="prevQuestion()" disabled>← Previous</button>
+          <button class="btn secondary" id="next-btn" onclick="nextQuestion()">Next →</button>
+        </div>
+        <button class="btn" onclick="submitQuiz()">Submit Answers 🎯</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- results -->
+  <section id="results-container" style="display:none">
+    <div class="card">
+      <h2>🎉 Results</h2>
+      <div id="name-display"></div>
+      <div id="meta-display" class="hint"></div>
+      <div id="score-text" class="score"></div>
+      <div id="answers-review" style="margin-top:12px"></div>
+      <button class="btn" onclick="restartQuiz()">Try Again ↺</button>
+    </div>
+  </section>
+</div>
+</div>
+
+<script>
+/* ========= QUIZ DATA (Replaced with Braille Quiz) ========= */
+const quizData = [
+{question:"What is Braille?",options:["A type of music","A special alphabet used by the blind","A kind of paper","A code used by deaf people"],correct:1},
+{question:"Why is Braille considered 'special'?",options:["It uses pictures instead of letters","It can be read by touch","It glows in the dark","It can only be printed on computers"],correct:1},
+{question:"How is the Braille alphabet marked?",options:["By printed ink letters","By raised dots on stiff paper","By colored shapes","By sound symbols"],correct:1},
+{question:"How do blind people understand Braille?",options:["By listening","By seeing the dots","By touching the raised dots with their fingers","By guessing the letters"],correct:2},
+{question:"What was special about Louis Braille?",options:["He was a teacher for the deaf","He was blind himself","He could not speak","He was from London"],correct:1},
+{question:"Where did Louis Braille work?",options:["In a blind school in Paris","In a hospital","In a university","In a printing press"],correct:0},
+{question:"When did Louis Braille develop his system?",options:["1824","1834","1852","1870"],correct:1},
+{question:"When did Braille become more commonly used?",options:["Soon after it was invented","During Braille’s lifetime","Around the time of his death","In modern times only"],correct:2},
+{question:"What makes up each letter in the Braille alphabet?",options:["Printed letters","Pictures","One or more raised dots","Colored marks"],correct:2},
+{question:"What do the small dots represent?",options:["Raised marks","Unraised marks","Letters","Spaces"],correct:1},
+{question:"What do the large dots represent?",options:["Raised marks","Colors","Numbers","Words"],correct:0},
+{question:"How many raised dots are there in the letter H?",options:["Two","Three","Four","Six"],correct:1},
+{question:"What makes H and L different in Braille?",options:["The color of the dots","The pattern of the raised dots","The size of the paper","The number of letters"],correct:1},
+{question:"How many possible positions can each dot take in Braille?",options:["Four","Five","Six","Eight"],correct:2},
+{question:"How many different Braille patterns can be made?",options:["26","52","63","100"],correct:2},
+{question:"How many letters does the Braille alphabet represent?",options:["20","24","26","28"],correct:2},
+{question:"What else does Braille include besides letters?",options:["Only numbers","Patterns for special or frequently used words","Pictures","Blank spaces"],correct:1},
+{question:"Which word is given as an example of a frequently used word in Braille?",options:["The","Is","And","Of"],correct:2},
+{question:"How is the word and written in Braille?",options:["By spelling out each letter","With a single special symbol","By drawing a line","By using two dots"],correct:1},
+{question:"Why are Braille books thick?",options:["Because they contain pictures","Because raised marks are punched out on each page","Because they use large letters","Because they have more stories"],correct:1},
+{question:"Why must Braille paper be stiff?",options:["To make the books heavy","To prevent the raised dots from flattening","To save money","To make printing easier"],correct:1},
+{question:"What does this line tell us about Braille literature?",options:["Only textbooks are available in Braille","Many books are available in Braille","Braille books are rare","Only novels are written in Braille"],correct:1},
+{question:"What can blind people do once they learn Braille?",options:["Paint pictures","Read and enjoy literature","Watch movies","Play musical instruments"],correct:1},
+{question:"What helps blind people write Braille?",options:["Special pens","Machines made for Braille writing","Typewriters","Computers only"],correct:1}
+];
+
+/* ===== STATE & ELEMENTS ===== */
+let student = {}; 
+let answers = new Array(quizData.length).fill(null);
+let currentIndex = 0;
+const quizDiv=document.getElementById('quiz');
+const progressBar=document.getElementById('progress-bar');
+
+/* ===== FORM SUBMIT ===== */
+document.getElementById('student-info-form').addEventListener('submit',e=>{
+ e.preventDefault();
+ student.name=document.getElementById('name').value;
+ student.roll=document.getElementById('roll').value;
+ student.class=document.getElementById('class').value;
+ student.section=document.getElementById('section').value;
+ document.getElementById('student-info-container').style.display='none';
+ document.getElementById('quiz-container').style.display='block';
+ renderQuiz(); showQuestion(0);
+});
+
+/* ===== RENDER ===== */
+function renderQuiz(){
+ quizDiv.innerHTML='';
+ quizData.forEach((q,i)=>{
+   const c=document.createElement('div');c.className='q-card';c.dataset.index=i;
+   const top=`<div class='q-top'><div class='q-num'>${i+1}</div><div class='q-text'>${q.question}</div></div>`;
+   const opts=document.createElement('div');opts.className='opts';
+   q.options.forEach((opt,idx)=>{
+     const b=document.createElement('div');b.className='opt';b.textContent=opt;
+     b.onclick=()=>{answers[i]=idx;markSelect(i,idx);updateProgress();};
+     opts.appendChild(b);
+   });
+   c.innerHTML=top; c.appendChild(opts); quizDiv.appendChild(c);
+ });
+}
+function markSelect(qi,opt){
+ const card=document.querySelector(`.q-card[data-index='${qi}']`);
+ card.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+ card.querySelectorAll('.opt')[opt].classList.add('selected');
+}
+function showQuestion(i){
+ currentIndex=i;
+ document.querySelectorAll('.q-card').forEach((c,idx)=>c.style.display=(idx===i)?'block':'none');
+ document.getElementById('live-q').textContent=`Question ${i+1} / ${quizData.length}`;
+ document.getElementById('prev-btn').disabled=(i===0);
+ document.getElementById('next-btn').disabled=(i===quizData.length-1);
+ updateProgress();
+}
+function nextQuestion(){if(currentIndex<quizData.length-1)showQuestion(currentIndex+1);}
+function prevQuestion(){if(currentIndex>0)showQuestion(currentIndex-1);}
+function updateProgress(){
+ const done=answers.filter(a=>a!==null).length;
+ progressBar.style.width=(done/quizData.length*100)+'%';
+}
+
+/* ===== SUBMIT ===== */
+function submitQuiz(){
+ let score=0; let review='<ol>';
+ quizData.forEach((q,i)=>{
+   const u=answers[i];
+   const correctIndex=q.correct;
+   const correctAns=q.options[correctIndex];
+   const userAns=u!==null?q.options[u]:"Not answered";
+   const ok=(u===correctIndex);
+   if(ok)score++;
+   review+=`<li>${q.question}<br><span style="color:${ok?'green':'red'}">Your answer: ${userAns} | Correct: ${correctAns}</span></li>`;
+ });
+ review+='</ol>';
+ document.getElementById('quiz-container').style.display='none';
+ const res=document.getElementById('results-container');res.style.display='block';
+ document.getElementById('name-display').textContent=student.name;
+ document.getElementById('meta-display').textContent=`Roll ${student.roll} — ${student.class} — Section ${student.section}`;
+ document.getElementById('score-text').textContent=`Score: ${score} / ${quizData.length}`;
+ document.getElementById('answers-review').innerHTML=review;
+}
+function restartQuiz(){
+ answers=new Array(quizData.length).fill(null);
+ currentIndex=0;
+ document.getElementById('results-container').style.display='none';
+ document.getElementById('student-info-container').style.display='block';
+ document.getElementById('quiz-container').style.display='none';
+ document.getElementById('student-info-form').reset();
+}
+</script>
+</body>
+</html>
